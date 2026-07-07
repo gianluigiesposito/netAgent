@@ -10,7 +10,7 @@
 * **Closed-Loop Automation (Ciclo Chiuso):** Il flusso esecutivo acquisisce lo stato reale dei dispositivi, calcola il delta di configurazione rispetto all'intento desiderato (tramite `CiscoConfParse`) e applica le modifiche previa approvazione dell'operatore (HITL). In caso di errore durante il deploy, esegue automaticamente la catena di rollback.
 * **Network Assurance & Control Plane Verification:** La fase di verifica esegue ping incrociati sul data plane ed analizza lo stato dei protocolli sul control plane (VLAN attive, stati Spanning Tree e binding DHCP reali) per attendere la convergenza della rete.
 * **Closed-loop Troubleshooting (GraphRAG):** Se i test di verifica falliscono, l'agente interroga **Neo4j** usando una query Cypher `shortestPath` per isolare solo i dispositivi fisici e logici sul percorso minimo del guasto. Integra i dati con un database vettoriale in memoria (`LocalVectorStore`) per estrarre le linee guida tecniche e correggere l'anomalia.
-* **Spec Wizard Interattivo:** Interfaccia CLI guidata a 5 fasi ([spec_wizard.py](llm/spec_wizard.py)) per la creazione formale dello YAML di specifica, con supporto per il bootstrap a partire da file di progetto `.gns3` o immagini (VLM).
+* **Spec Wizard Interattivo:** Interfaccia CLI guidata a 5 fasi ([spec_wizard.py](llm/spec_wizard.py)) per la stesura assistita dello YAML di specifica. Integra il **parsing automatico dei progetti GNS3** (estrazione diretta dei link fisici e dei nodi dal file `.gns3`) ed il bootstrap da immagini tramite modelli multimodali (VLM).
 
 ---
 
