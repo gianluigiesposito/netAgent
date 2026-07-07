@@ -47,7 +47,14 @@ DEPLOY_MODE=human-in-the-loop # o automated
 
 * **Avvio dello Spec Wizard (Creazione Specifica):**
   ```bash
+  # Modalità interattiva standard
   python llm/spec_wizard.py -o config/test_intent.yaml
+
+  # Avvio con importazione automatica della topologia fisica da progetto GNS3 (.gns3)
+  python llm/spec_wizard.py -o config/test_intent.yaml -g percorso/progetto.gns3
+
+  # Avvio con importazione della topologia fisica da immagine (VLM)
+  python llm/spec_wizard.py -o config/test_intent.yaml -i percorso/diagramma.png
   ```
 
 * **Avvio dell'Orchestratore Backend:**
