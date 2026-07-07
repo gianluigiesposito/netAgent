@@ -65,4 +65,4 @@ DEPLOY_MODE=human-in-the-loop # o automated
 ## Licenza
 Copyright (c) 2026 Gianluigi Esposito. Tutti i diritti riservati.
 
-Il codice è pubblicato su questo repository pubblico al solo scopo di consentire la consultazione e la valutazione accademica da parte della commissione d'esame e del corpo docente dell'Università degli Studi di Napoli Federico II. È vietata qualsiasi copia, modifica o ridistribuzione non autorizzata.
+È vietata qualsiasi copia, modifica o ridistribuzione non autorizzata.
