@@ -1,0 +1,213 @@
+{# cisco_switch/base_config.j2
+   Idempotenza granulare applicata anche per i device switch L2.
+#}
+{% if is_rollback %}
+configure terminal
+{% set m = missing | default([]) %}
+
+{% if enable_secret and "enable secret" in m %}
+no enable secret
+{% endif %}
+
+{% if hostname and ("hostname " ~ hostname) in m %}
+hostname {{ original_hostname }}
+{% endif %}
+
+{% if banner and ("banner motd #" ~ banner ~ "#") in m %}
+no banner motd
+{% endif %}
+
+{% if login_block_for and login_attempts and login_within and ("login block-for " ~ login_block_for ~ " attempts " ~ login_attempts ~ " within " ~ login_within) in m %}
+no login block-for
+{% endif %}
+
+{% if username and ("username " ~ username) in m %}
+no username {{ username }}
+{% endif %}
+
+{% set _console_timeout_cmd = "line console 0: exec-timeout " ~ console_timeout_m ~ " " ~ console_timeout_s %}
+{% if "line console 0: login local" in m or _console_timeout_cmd in m %}
+line console 0
+{% if "line console 0: login local" in m %}
+no login local
+{% endif %}
+{% if _console_timeout_cmd in m %}
+no exec-timeout
+{% endif %}
+exit
+{% endif %}
+
+{% if domain_name and ("ip domain-name " ~ domain_name) in m %}
+no ip domain-name {{ domain_name }}
+{% endif %}
+
+{% if needs_crypto_key %}
+crypto key zeroize rsa
+{% endif %}
+
+{% if "ip ssh version 2" in m %}
+no ip ssh version
+{% endif %}
+
+{% if ("ip ssh time-out " ~ ssh_timeout) in m %}
+no ip ssh time-out
+{% endif %}
+
+{% if ("ip ssh authentication-retries " ~ ssh_retries) in m %}
+no ip ssh authentication-retries
+{% endif %}
+
+{% set _vty_timeout_cmd = "line vty: exec-timeout " ~ vty_timeout_m ~ " " ~ vty_timeout_s %}
+{% if "line vty: transport input ssh" in m or "line vty: login local" in m or _vty_timeout_cmd in m %}
+line vty {{ vty_lines }}
+{% if "line vty: login local" in m %}
+no login local
+{% endif %}
+{% if _vty_timeout_cmd in m %}
+no exec-timeout
+{% endif %}
+{% if "line vty: transport input ssh" in m %}
+transport input all
+{% endif %}
+exit
+{% endif %}
+
+{% if service_password_encryption and "service password-encryption" in m %}
+no service password-encryption
+{% endif %}
+
+{% if default_gateway and ("ip default-gateway " ~ default_gateway) in m %}
+no ip default-gateway {{ default_gateway }}
+{% endif %}
+
+{% if "no ip routing" in m %}
+! Soluzione specifica per GNS3: riabilita routing (rollback)
+ip routing
+{% endif %}
+
+exit
+{% else %}
+configure terminal
+{% set m = missing | default([]) %}
+
+{% if vtp_mode and ("vtp mode " ~ vtp_mode) in m %}
+vtp mode {{ vtp_mode }}
+{% endif %}
+
+{% if enable_secret and "enable secret" in m %}
+enable secret {{ enable_secret }}
+{% endif %}
+
+{% if hostname and ("hostname " ~ hostname) in m %}
+hostname {{ hostname }}
+{% endif %}
+
+{% if banner and ("banner motd #" ~ banner ~ "#") in m %}
+banner motd ^{{ banner }}^
+{% endif %}
+
+
+{% if login_block_for and login_attempts and login_within and ("login block-for " ~ login_block_for ~ " attempts " ~ login_attempts ~ " within " ~ login_within) in m %}
+login block-for {{ login_block_for }} attempts {{ login_attempts }} within {{ login_within }}
+{% endif %}
+
+{% if username and ("username " ~ username) in m %}
+username {{ username }} privilege 15 secret {{ password }}
+{% endif %}
+
+{% set _console_timeout_cmd = "line console 0: exec-timeout " ~ console_timeout_m ~ " " ~ console_timeout_s %}
+{% if "line console 0: login local" in m or _console_timeout_cmd in m %}
+line console 0
+{% if "line console 0: login local" in m %}
+login local
+{% endif %}
+{% if _console_timeout_cmd in m %}
+exec-timeout {{ console_timeout_m }} {{ console_timeout_s }}
+{% endif %}
+exit
+{% endif %}
+
+{% if domain_name and ("ip domain-name " ~ domain_name) in m %}
+ip domain-name {{ domain_name }}
+{% endif %}
+
+{% if needs_crypto_key %}
+crypto key generate rsa general-keys modulus 2048
+{% endif %}
+
+{% if "ip ssh version 2" in m %}
+ip ssh version 2
+{% endif %}
+
+{% if ("ip ssh time-out " ~ ssh_timeout) in m %}
+ip ssh time-out {{ ssh_timeout }}
+{% endif %}
+
+{% if ("ip ssh authentication-retries " ~ ssh_retries) in m %}
+ip ssh authentication-retries {{ ssh_retries }}
+{% endif %}
+
+{% set _vty_timeout_cmd = "line vty: exec-timeout " ~ vty_timeout_m ~ " " ~ vty_timeout_s %}
+{% if "line vty: transport input ssh" in m or "line vty: login local" in m or _vty_timeout_cmd in m %}
+line vty {{ vty_lines }}
+{% if "line vty: login local" in m %}
+login local
+{% endif %}
+{% if _vty_timeout_cmd in m %}
+exec-timeout {{ vty_timeout_m }} {{ vty_timeout_s }}
+{% endif %}
+{% if "line vty: transport input ssh" in m %}
+transport input ssh
+{% endif %}
+exit
+{% endif %}
+
+{% if service_password_encryption and "service password-encryption" in m %}
+service password-encryption
+{% endif %}
+
+{% if dhcp_snooping_vlans %}
+ip dhcp snooping
+{% for vlan in dhcp_snooping_vlans %}
+ip dhcp snooping vlan {{ vlan }}
+{% endfor %}
+{% endif %}
+
+{% for port in access_ports %}
+interface {{ port.name }}
+switchport mode access
+{% if port.port_security %}
+switchport port-security
+switchport port-security maximum {{ port.port_security_max }}
+{% if port.port_security_mac_sticky %}
+switchport port-security mac-address sticky
+{% endif %}
+switchport port-security violation {{ port.port_security_violation }}
+{% endif %}
+{% if port.portfast %}
+spanning-tree portfast
+{% endif %}
+{% if port.bpduguard %}
+spanning-tree bpduguard enable
+{% endif %}
+exit
+{% endfor %}
+
+{% if mgmt_vlan and mgmt_ip and mgmt_mask %}
+interface Vlan{{ mgmt_vlan }}
+ip address {{ mgmt_ip }} {{ mgmt_mask }}
+no shutdown
+exit
+{% endif %}
+
+{% if default_gateway and ("ip default-gateway " ~ default_gateway) in m %}
+ip default-gateway {{ default_gateway }}
+{% endif %}
+
+{% if "no ip routing" in m %}
+! Soluzione specifica per GNS3: disabilita routing per abilitare ip default-gateway
+no ip routing
+{% endif %}
+
+exit
+{% endif %}

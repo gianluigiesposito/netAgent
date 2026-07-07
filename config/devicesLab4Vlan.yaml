@@ -1,0 +1,58 @@
+# ===================================================================
+# NetAgent - Inventario Dispositivi (RoaS 3 VLAN, 6 PC)
+# ===================================================================
+
+# --- CISCO CORE ROUTER (Router-on-a-Stick) ---
+Router:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5007
+  vendor: "cisco_ios"
+  username: "admin"
+  password: "cisco"
+
+# --- CISCO ACCESS SWITCH ---
+Switch:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5006
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+# --- TERMINAL CLIENTS (VPCS) ---
+PC1:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5000
+  vendor: "vpcs"
+
+PC2:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5002
+  vendor: "vpcs"
+
+PC3:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5004
+  vendor: "vpcs"
+
+PC4:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5008
+  vendor: "vpcs"
+
+PC5:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5010
+  vendor: "vpcs"
+
+PC6:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5012
+  vendor: "vpcs"

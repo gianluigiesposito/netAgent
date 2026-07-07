@@ -1,0 +1,14 @@
+{# cisco_ios/static_route.j2
+   Aggiunge o rimuove una rotta statica Cisco IOS.
+   Variabili: network, mask, next_hop, stale_next_hop, is_rollback
+#}
+configure terminal
+{% if is_rollback %}
+no ip route {{ network }} {{ mask }} {{ next_hop }}
+{% else %}
+{% if stale_next_hop %}
+no ip route {{ network }} {{ mask }} {{ stale_next_hop }}
+{% endif %}
+ip route {{ network }} {{ mask }} {{ next_hop }}
+{% endif %}
+exit

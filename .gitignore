@@ -1,0 +1,162 @@
+# ==============================================================================
+# NETAGENT V2 - CONFIGURAZIONE GITIGNORE (OTTIMIZZATO)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Ambienti Virtuali e Dipendenze Python
+# ------------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+include/
+share/
+pyvenv.cfg
+pip-selfcheck.json
+
+# ------------------------------------------------------------------------------
+# 2. Cache di Python, Compilati e Testing
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.cache
+htmlcov/
+.ipynb_checkpoints
+
+# ------------------------------------------------------------------------------
+# 3. Cache di Editor e IDE (VS Code, Cursor, PyCharm, etc.)
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ------------------------------------------------------------------------------
+# 4. Database di Stato LangGraph, Indici e Variabili Ambientali (Zero Trust)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.db
+*.db-journal
+netagent_state.db
+
+# ------------------------------------------------------------------------------
+# 5. File della Tesi, Appunti Personali, Bozze e Documentazione Esclusa
+# ------------------------------------------------------------------------------
+*.pdf
+*.docx
+*.doc
+*.odt
+*.csv
+
+# Appunti e file di log/sviluppo temporanei
+discorso.txt
+fix.txt
+codeReview.txt
+grafo.txt
+metriche.txt
+roadmap.txt
+roadmap2.txt
+possibileAggiornamento.txt
+possibileAggiornamento2.txt
+queryNeo4j.txt
+toDoTesi.txt
+recapNetAgent.*
+
+# File di documentazione esclusi (L'UNICO AMMESSO E' netagent_v2_system_documentation.md)
+AGENTS.md
+GEMINI.md
+codebase_documentation.md
+*indiceRagionato*.md
+indice_ragionato_v2.md
+tesi_capitolo1.md
+proposta_evoluzione_troubleshooting.md
+
+# ------------------------------------------------------------------------------
+# 6. Cartelle relative a Skills, Tools di Specifica e Ambienti Ausiliari
+# ------------------------------------------------------------------------------
+.agents/
+.specify/
+.gemini/
+.understand-anything/
+specs/
+knowledge_base/
+
+# ------------------------------------------------------------------------------
+# 7. Cluttering in config/ (Wizard Sessions, copie, spec generate)
+# ------------------------------------------------------------------------------
+# Ignora le sessioni temporanee del Wizard
+config/.*.json
+config/.wizard_session_*.json
+
+# Ignora gli indici locali di Knowledge Base / Embedding generati a runtime
+config/kb_index_*.json
+config/generated_intent.yaml
+
+# Ignora i backup o copie dei file yaml o txt
+config/*(copy)*
+config/*(Backup)*
+config/devices (Complesso).yaml
+config/devices (copy).yaml
+config/devices1.yaml
+config/devices3.yaml
+config/devicesLab3.yaml
+config/devicesLab4Finale.yaml
+config/devicesLab4Vlan.yaml
+config/devicesLabVlanDhcp.yaml
+config/devices_generato.yaml
+config/specLab4VlanCompleto.yaml
+config/specVlanRelayDhcp.yaml
+config/specifica*.txt
+
+# Ignora le specifiche temporanee numerate generate dal Wizard
+config/spec_*.txt
+config/spec_*.yaml
+
+# Conserva esclusivamente le configurazioni e laboratori stabili
+!config/devices.yaml
+!config/defaults.yaml
+!config/test_intent.yaml
+!config/lab3.yaml
+!config/lab4.yaml
+!config/lab5.yaml
+
+# ------------------------------------------------------------------------------
+# 8. Directory Temporanee e di Supporto
+# ------------------------------------------------------------------------------
+magazzino/
+laboratorio4ConVlan/
+metrics/run_*.json
+brain/
+scratch/

@@ -1,0 +1,106 @@
+devices:
+- name: PC1
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: 192.168.1.10/24
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.1.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC2
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: 192.168.2.10/24
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.2.1
+  dhcp_pools: []
+  vlans: {}
+- name: SW1
+  profile: cisco_switch
+  interfaces:
+  - name: e0/0
+    ip: 192.168.1.2/24
+  - name: e0/1
+    mode: access
+    vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.1.1
+  dhcp_pools: []
+  vlans: {}
+  hostname: SW1
+  banner: Forza Napoli Sempre
+  enable_secret: env:NETAGENT_DEV_PASSWORD_DEFAULT
+  domain_name: napoli.com
+  default_gateway: 192.168.1.1
+- name: SW2
+  profile: cisco_switch
+  interfaces:
+  - name: e0/0
+    ip: 192.168.2.2/24
+  - name: e0/1
+    mode: access
+    vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.2.1
+  dhcp_pools: []
+  vlans: {}
+  hostname: SW2
+  banner: Forza Napoli Sempre
+  enable_secret: env:NETAGENT_DEV_PASSWORD_DEFAULT
+  domain_name: napoli.com
+  default_gateway: 192.168.2.1
+- name: R1
+  profile: frrouting
+  interfaces:
+  - name: eth0
+    ip: 192.168.1.1/24
+  - name: eth1
+    ip: 10.0.0.1/30
+  static_routes:
+  - network: 192.168.2.0/24
+    next_hop: 10.0.0.2
+  dhcp_pools: []
+  vlans: {}
+  hostname: R1
+  banner: Forza Napoli Sempre
+  enable_secret: env:NETAGENT_DEV_PASSWORD_DEFAULT
+  domain_name: napoli.com
+- name: R2
+  profile: cisco_ios
+  interfaces:
+  - name: e0/0
+    ip: 192.168.2.1/24
+  - name: e0/1
+    ip: 10.0.0.2/30
+  static_routes:
+  - network: 192.168.1.0/24
+    next_hop: 10.0.0.1
+  dhcp_pools: []
+  vlans: {}
+  hostname: R2
+  banner: Forza Napoli Sempre
+  enable_secret: env:NETAGENT_DEV_PASSWORD_DEFAULT
+  domain_name: napoli.com
+links:
+- endpoints:
+  - PC1:e0
+  - SW1:e0/1
+- endpoints:
+  - SW1:e0/0
+  - R1:eth0
+- endpoints:
+  - R1:eth1
+  - R2:e0/1
+- endpoints:
+  - R2:e0/0
+  - SW2:e0/0
+- endpoints:
+  - SW2:e0/1
+  - PC2:e0
+rollback_scope: all

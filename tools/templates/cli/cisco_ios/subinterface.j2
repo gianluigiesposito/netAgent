@@ -1,0 +1,34 @@
+{# cisco_ios/subinterface.j2
+   Configura o rimuove una subinterface dot1Q su router Cisco IOS
+   per l'inter-VLAN routing (pattern "router-on-a-stick").
+
+   Prima di creare la subinterface, il template assicura che
+   l'interfaccia parent sia up (no shutdown) senza IP assegnato
+   (un IP sull'interfaccia parent causerebbe conflitti).
+
+   Il rollback rimuove l'intera subinterface con 'no interface'.
+
+   Variabili: parent_iface, sub_id, vlan_id, ip, mask,
+              stale_ip (str, può essere vuoto), stale_mask (str),
+              is_rollback
+#}
+configure terminal
+{% if is_rollback %}
+no interface {{ parent_iface }}.{{ sub_id }}
+{% else %}
+{% if configure_parent is not defined or configure_parent %}
+interface {{ parent_iface }}
+no ip address
+no shutdown
+exit
+{% endif %}
+interface {{ parent_iface }}.{{ sub_id }}
+encapsulation dot1Q {{ vlan_id }}
+{% if stale_ip %}
+no ip address {{ stale_ip }} {{ stale_mask }}
+{% endif %}
+ip address {{ ip }} {{ mask }}
+no shutdown
+exit
+{% endif %}
+exit

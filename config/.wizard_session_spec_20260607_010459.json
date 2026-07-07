@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Inizia il dialogo per raccogliere i nodi e i link fisici della topologia."
+  },
+  {
+    "role": "assistant",
+    "content": "Certamente. Sono pronto a definire la topologia di rete.\n\nPer iniziare, elenca i dispositivi che compongono il laboratorio (nome e tipo/profilo, ad esempio: `Router1` di tipo `cisco_ios`, `Switch1` di tipo `cisco_switch`, `PC1` di tipo `vpcs`) e descrivi come sono collegati tra loro fisicamente.\n\nQuali sono i dispositivi che intendi inserire nella topologia?"
+  }
+]

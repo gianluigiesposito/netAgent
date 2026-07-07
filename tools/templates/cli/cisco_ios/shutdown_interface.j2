@@ -1,0 +1,17 @@
+{# cisco_ios/shutdown_interface.j2
+   Spegne un'interfaccia fisica non utilizzata.
+   Variabili: iface, is_rollback
+#}
+configure terminal
+{% if " " in iface or "," in iface or "-" in iface %}
+interface range {{ iface }}
+{% else %}
+interface {{ iface }}
+{% endif %}
+{% if is_rollback %}
+no shutdown
+{% else %}
+shutdown
+{% endif %}
+exit
+exit

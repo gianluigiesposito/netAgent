@@ -1,0 +1,10 @@
+Value NAME (\S+)
+Value STATUS (up|down)
+Value IP (\S+/\d+|unassigned)
+
+Start
+  ^${NAME}\s+(up|down)\s+\[${STATUS}\]\s+${IP} -> Record
+  ^${NAME}\s+(up|down)\s+\[${STATUS}\] -> Record
+  ^\s+inet\s+${IP} -> Record
+  ^${NAME}\s+is\s+(up|down) -> Continue
+  ^${NAME}\s+(up|down) -> Record

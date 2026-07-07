@@ -1,0 +1,70 @@
+devices:
+- banner: null
+  dhcp_pools:
+  - dns: 8.8.8.8
+    excluded_end: null
+    excluded_start: null
+    gateway: 192.168.1.1
+    lease: 1
+    name: LAN_POOL
+    network: 192.168.1.0/24
+  dhcp_relay_server: null
+  dhcp_relay_subnets: null
+  domain_name: null
+  enable_secret: null
+  extra_params: null
+  hostname: null
+  interfaces:
+  - access_vlan: null
+    channel_group: null
+    channel_mode: null
+    ip: 10.0.0.1/30
+    mode: null
+    name: GigabitEthernet0/0
+    native_vlan: 1
+    trunk_vlans: null
+    vlan_id: null
+  - access_vlan: null
+    channel_group: null
+    channel_mode: null
+    ip: 192.168.1.1/24
+    mode: null
+    name: GigabitEthernet0/1
+    native_vlan: 1
+    trunk_vlans: null
+    vlan_id: null
+  name: R1
+  profile: cisco_ios
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 10.0.0.2
+  vlans: {}
+- banner: null
+  dhcp_pools: []
+  dhcp_relay_server: null
+  dhcp_relay_subnets: null
+  domain_name: null
+  enable_secret: null
+  extra_params: null
+  hostname: null
+  interfaces:
+  - access_vlan: null
+    channel_group: null
+    channel_mode: null
+    ip: 10.0.0.2/30
+    mode: null
+    name: GigabitEthernet0/0
+    native_vlan: 1
+    trunk_vlans: null
+    vlan_id: null
+  name: R2
+  profile: cisco_ios
+  static_routes:
+  - network: 192.168.1.0/24
+    next_hop: 10.0.0.1
+  vlans: {}
+links:
+- endpoints:
+  - R1:GigabitEthernet0/0
+  - R2:GigabitEthernet0/0
+rollback_scope: all

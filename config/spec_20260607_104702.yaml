@@ -1,0 +1,180 @@
+lab_reference: Lab_3_Cisco_Extension_With_Static_And_DHCP
+networks:
+  LAN_R1_A:
+    cidr: 1.10.0.0/24
+    gateway: 1.10.0.1
+  LAN_R1_B:
+    cidr: 128.50.0.0/24
+    gateway: 128.50.0.1
+  LAN_R2:
+    cidr: 100.64.10.0/24
+    gateway: 100.64.10.1
+  LAN_CISCO_DHCP:
+    cidr: 195.100.50.0/24
+    gateway: 195.100.50.1
+    dhcp:
+      enabled: true
+      pool_name: CISCO_POOL
+      dns: 8.8.8.8
+      lease: 1
+      excluded: [195.100.50.1, 195.100.50.10]
+  LAN_CISCO_DHCP2:
+    cidr: 195.100.60.0/24
+    gateway: 195.100.60.1
+    dhcp:
+      enabled: true
+      pool_name: CISCO_POOL2
+      dns: 8.8.8.8
+      lease: 1
+      excluded: [195.100.60.1]
+
+devices:
+  R1:
+    profile: frrouting
+    interfaces:
+      - {name: eth0, ip: 1.10.0.1/24}
+      - {name: eth2, ip: 128.50.0.1/24}
+      - {name: eth1, ip: 11.11.11.1/30}
+    static_routes:
+      - {network: 100.64.10.0/24, next_hop: 11.11.11.2}
+      - {network: 195.100.50.0/24, next_hop: 11.11.11.2}
+      - {network: 195.100.60.0/24, next_hop: 11.11.11.2}
+  R2:
+    profile: frrouting
+    interfaces:
+      - {name: eth0, ip: 100.64.10.1/24}
+      - {name: eth1, ip: 11.11.11.2/30}
+      - {name: eth2, ip: 12.12.12.1/30}
+    static_routes:
+      - {network: 1.10.0.0/24, next_hop: 11.11.11.1}
+      - {network: 128.50.0.0/24, next_hop: 11.11.11.1}
+      - {network: 195.100.50.0/24, next_hop: 12.12.12.2}
+      - {network: 195.100.60.0/24, next_hop: 12.12.12.2}
+  IOU1:
+    profile: cisco_ios
+    hostname: IOU1
+    interfaces:
+      - {name: Ethernet0/1, ip: 195.100.50.1/24}
+      - {name: Ethernet0/0, ip: 12.12.12.2/30}
+      - {name: Ethernet0/2, ip: 13.13.13.1/30}
+    static_routes:
+      - {network: 1.10.0.0/24, next_hop: 12.12.12.1}
+      - {network: 128.50.0.0/24, next_hop: 12.12.12.1}
+      - {network: 100.64.10.0/24, next_hop: 12.12.12.1}
+      - {network: 195.100.60.0/24, next_hop: 13.13.13.2}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  IOU2:
+    profile: cisco_ios
+    hostname: IOU2
+    interfaces:
+      - {name: Ethernet0/1, ip: 195.100.60.1/24}
+      - {name: Ethernet0/0, ip: 13.13.13.2/30}
+    static_routes:
+      - {network: 1.10.0.0/24, next_hop: 13.13.13.1}
+      - {network: 128.50.0.0/24, next_hop: 13.13.13.1}
+      - {network: 100.64.10.0/24, next_hop: 13.13.13.1}
+      - {network: 195.100.50.0/24, next_hop: 13.13.13.1}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  Switch1:
+    profile: cisco_switch
+    hostname: Switch1
+    interfaces:
+      - {name: Vlan1, ip: 195.100.50.2/24}
+      - {name: Ethernet0/0}
+      - {name: Ethernet0/1}
+      - {name: Ethernet0/2}
+      - {name: Ethernet0/3}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  Switch2:
+    profile: cisco_switch
+    hostname: Switch2
+    interfaces:
+      - {name: Vlan1, ip: 195.100.50.3/24}
+      - {name: Ethernet0/0}
+      - {name: Ethernet0/1}
+      - {name: Ethernet0/2}
+      - {name: Ethernet0/3}
+      - {name: Ethernet1/0}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  Switch3:
+    profile: cisco_switch
+    hostname: Switch3
+    interfaces:
+      - {name: Vlan1, ip: 195.100.60.2/24}
+      - {name: Ethernet0/0}
+      - {name: Ethernet0/1}
+      - {name: Ethernet0/2}
+      - {name: Ethernet0/3}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  Switch4:
+    profile: cisco_switch
+    hostname: Switch4
+    interfaces:
+      - {name: Vlan1, ip: 195.100.50.4/24}
+      - {name: Ethernet0/0}
+      - {name: Ethernet0/1}
+      - {name: Ethernet0/2}
+      - {name: Ethernet0/3}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  Switch5:
+    profile: cisco_switch
+    hostname: Switch5
+    interfaces:
+      - {name: Vlan1, ip: 195.100.60.3/24}
+      - {name: Ethernet0/0}
+      - {name: Ethernet0/1}
+      - {name: Ethernet0/2}
+      - {name: Ethernet0/3}
+      - {name: Ethernet1/0}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+    security: {domain_name: lab.local, banner: "Accesso riservato", vty_timeout: 5}
+  PC1: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC2: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC3: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC4: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC5: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC6: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC7: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC8: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC9: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC10: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC11: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC12: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC13: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC14: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC15: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC16: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+  PC17: {profile: vpcs, interfaces: [{name: eth0, ip: dhcp}]}
+
+links:
+  - endpoints: ["R1:eth0", "Switch1:Ethernet0/0"]
+  - endpoints: ["R1:eth1", "R2:eth1"]
+  - endpoints: ["R1:eth2", "Switch4:Ethernet0/0"]
+  - endpoints: ["R2:eth0", "Switch3:Ethernet0/0"]
+  - endpoints: ["R2:eth2", "IOU1:Ethernet0/0"]
+  - endpoints: ["IOU1:Ethernet0/1", "Switch2:Ethernet0/0"]
+  - endpoints: ["IOU1:Ethernet0/2", "IOU2:Ethernet0/0"]
+  - endpoints: ["IOU2:Ethernet0/1", "Switch5:Ethernet0/0"]
+  - endpoints: ["Switch1:Ethernet0/1", "PC4:eth0"]
+  - endpoints: ["Switch1:Ethernet0/2", "PC1:eth0"]
+  - endpoints: ["Switch1:Ethernet0/3", "PC3:eth0"]
+  - endpoints: ["Switch2:Ethernet0/1", "PC11:eth0"]
+  - endpoints: ["Switch2:Ethernet0/2", "PC10:eth0"]
+  - endpoints: ["Switch2:Ethernet0/3", "PC16:eth0"]
+  - endpoints: ["Switch2:Ethernet1/0", "PC17:eth0"]
+  - endpoints: ["Switch3:Ethernet0/1", "PC5:eth0"]
+  - endpoints: ["Switch3:Ethernet0/2", "PC2:eth0"]
+  - endpoints: ["Switch3:Ethernet0/3", "PC6:eth0"]
+  - endpoints: ["Switch4:Ethernet0/1", "PC7:eth0"]
+  - endpoints: ["Switch4:Ethernet0/2", "PC8:eth0"]
+  - endpoints: ["Switch4:Ethernet0/3", "PC9:eth0"]
+  - endpoints: ["Switch5:Ethernet0/1", "PC12:eth0"]
+  - endpoints: ["Switch5:Ethernet0/2", "PC15:eth0"]
+  - endpoints: ["Switch5:Ethernet0/3", "PC14:eth0"]
+  - endpoints: ["Switch5:Ethernet1/0", "PC13:eth0"]

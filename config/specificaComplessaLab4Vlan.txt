@@ -1,0 +1,127 @@
+# ====================================================================================
+# NETAGENT TARGET SPECIFICATION - ROUTER ON A STICK (3 VLAN + DHCP)
+# ====================================================================================
+
+=== NETAGENT SYSTEM TARGET SPECIFICATION FILE ===
+LAB_REFERENCE: Lab_RoaS_3_VLAN_6_PC
+TOPOLOGY_OBJECTIVE: Router-on-a-Stick con 3 VLAN, 3 Pool DHCP dedicati e 6 PC
+
+# ──────────────────────────────────────────────────────────────────────────────
+# NETWORK DEFINITIONS (VLANs & DHCP Pools)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- NETWORK: VLAN10_SALES ---
+CIDR: 192.168.10.0/24
+GATEWAY: 192.168.10.1
+ROUTER: Router
+ROUTER_INTERFACE: Ethernet0/0
+VLAN_ID: 10
+VLAN_NAME: SALES
+DHCP: true
+DHCP_POOL_NAME: POOL_VLAN10
+DHCP_DNS: 8.8.8.8
+DHCP_EXCLUDED: 192.168.10.1 192.168.10.10
+
+--- NETWORK: VLAN20_HR ---
+CIDR: 192.168.20.0/24
+GATEWAY: 192.168.20.1
+ROUTER: Router
+ROUTER_INTERFACE: Ethernet0/0
+VLAN_ID: 20
+VLAN_NAME: HR
+DHCP: true
+DHCP_POOL_NAME: POOL_VLAN20
+DHCP_DNS: 8.8.8.8
+DHCP_EXCLUDED: 192.168.20.1 192.168.20.10
+
+--- NETWORK: VLAN30_IT ---
+CIDR: 192.168.30.0/24
+GATEWAY: 192.168.30.1
+ROUTER: Router
+ROUTER_INTERFACE: Ethernet0/0
+VLAN_ID: 30
+VLAN_NAME: IT
+DHCP: true
+DHCP_POOL_NAME: POOL_VLAN30
+DHCP_DNS: 8.8.8.8
+DHCP_EXCLUDED: 192.168.30.1 192.168.30.10
+
+# ──────────────────────────────────────────────────────────────────────────────
+# HOST DEVICES (VPCS)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: PC1 ---
+PROFILE: vpcs
+NETWORK: VLAN10_SALES
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC2 ---
+PROFILE: vpcs
+NETWORK: VLAN10_SALES
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC3 ---
+PROFILE: vpcs
+NETWORK: VLAN20_HR
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC4 ---
+PROFILE: vpcs
+NETWORK: VLAN20_HR
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC5 ---
+PROFILE: vpcs
+NETWORK: VLAN30_IT
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC6 ---
+PROFILE: vpcs
+NETWORK: VLAN30_IT
+IP_ADDRESS: DHCP
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CISCO ROUTER — Router-on-a-Stick & DHCP Server
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: Router ---
+PROFILE: cisco_ios
+SUBINTERFACE: Ethernet0/0.10 VLAN 10 IP 192.168.10.1/24
+SUBINTERFACE: Ethernet0/0.20 VLAN 20 IP 192.168.20.1/24
+SUBINTERFACE: Ethernet0/0.30 VLAN 30 IP 192.168.30.1/24
+CONNECT_TO_NETWORKS: VLAN10_SALES, VLAN20_HR, VLAN30_IT
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Router
+BANNER: Router-on-a-Stick - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SERVICE_PASSWORD_ENCRYPTION: true
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CISCO SWITCH — Layer 2, Trunk & Access Ports
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: Switch ---
+PROFILE: cisco_switch
+VLANS: 10 SALES, 20 HR, 30 IT
+TRUNK_PORT: Ethernet0/0 VLANS 10,20,30 NATIVE 1
+# Porte assegnate alla VLAN 10
+ACCESS_PORT: Ethernet0/1 10
+ACCESS_PORT: Ethernet0/2 10
+# Porte assegnate alla VLAN 20
+ACCESS_PORT: Ethernet0/3 20
+ACCESS_PORT: Ethernet1/0 20
+# Porte assegnate alla VLAN 30
+ACCESS_PORT: Ethernet1/1 30
+ACCESS_PORT: Ethernet1/2 30
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch
+BANNER: Switch Layer 2 - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SERVICE_PASSWORD_ENCRYPTION: true
+PORTFAST: true

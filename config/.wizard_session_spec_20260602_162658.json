@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Inizia il dialogo da capo."
+  },
+  {
+    "role": "assistant",
+    "content": "Buongiorno! Sono il tuo **NetAgent Spec Wizard**. Il mio compito è guidarti nella progettazione di una rete virtuale da laboratorio che sia non solo funzionale, ma anche conforme ai più rigorosi standard di sicurezza e best practice di networking.\n\nAgirò come tuo mentore e linter in tempo reale: analizzerò ogni tua scelta per prevenire errori di convergenza (L2/L3), vulnerabilità di sicurezza (come VLAN Hopping o gestione insicura) e problemi di configurazione (come il mancato PortFast o mismatch di Native VLAN).\n\nPer iniziare la stesura della specifica, ho bisogno di definire il perimetro del progetto.\n\n**Qual è l'obiettivo principale del tuo laboratorio (LAB_REFERENCE e TOPOLOGY_OBJECTIVE)?** (Ad esempio: \"Lab_Core_Switching\", \"Simulazione rete aziendale con segmentazione VLAN\", ecc.)"
+  }
+]

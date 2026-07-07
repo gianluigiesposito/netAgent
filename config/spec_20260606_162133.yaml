@@ -1,0 +1,190 @@
+devices:
+- name: R1
+  profile: cisco_ios
+  interfaces:
+  - name: Ethernet0/0
+    ip: 10.0.0.1/30
+    native_vlan: 1
+  - name: Ethernet0/1.10
+    ip: 192.168.10.1/24
+    vlan_id: 10
+    native_vlan: 1
+  - name: Ethernet0/1.20
+    ip: 192.168.20.1/24
+    vlan_id: 20
+    native_vlan: 1
+  - name: Ethernet0/1.99
+    ip: 192.168.99.1/24
+    vlan_id: 99
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 10.0.0.2
+  dhcp_pools: []
+  vlans: {}
+  hostname: R1
+  enable_secret: cisco
+  domain_name: lab.local
+  extra_params: 'DHCP_RELAY: 192.168.10.0/24,192.168.20.0/24; DHCP_SERVER: R2'
+- name: R2
+  profile: cisco_ios
+  interfaces:
+  - name: Ethernet0/0
+    ip: 10.0.0.2/30
+    native_vlan: 1
+  static_routes:
+  - network: 192.168.10.0/24
+    next_hop: 10.0.0.1
+  - network: 192.168.20.0/24
+    next_hop: 10.0.0.1
+  - network: 192.168.99.0/24
+    next_hop: 10.0.0.1
+  dhcp_pools:
+  - name: POOL_VLAN10
+    network: 192.168.10.0/24
+    gateway: 192.168.10.1
+    dns: 8.8.8.8
+    lease: 1
+  - name: POOL_VLAN20
+    network: 192.168.20.0/24
+    gateway: 192.168.20.1
+    dns: 8.8.8.8
+    lease: 1
+  vlans: {}
+  hostname: R2
+  enable_secret: cisco
+- name: SW1
+  profile: cisco_switch
+  interfaces:
+  - name: Ethernet2/0
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+    channel_group: 1
+    channel_mode: active
+  - name: Ethernet2/1
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+    channel_group: 1
+    channel_mode: active
+  - name: Port-channel1
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+  - name: Vlan99
+    ip: 192.168.99.2/24
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.99.1
+  dhcp_pools: []
+  vlans:
+    10: USERS_10
+    20: USERS_20
+    99: MGMT
+    999: NATIVE_VLAN
+  hostname: SW1
+- name: SW2
+  profile: cisco_switch
+  interfaces:
+  - name: Ethernet0/0
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+  - name: Ethernet2/0
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+    channel_group: 1
+    channel_mode: active
+  - name: Ethernet2/1
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+    channel_group: 1
+    channel_mode: active
+  - name: Port-channel1
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 99
+    native_vlan: 999
+  - name: Vlan99
+    ip: 192.168.99.3/24
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.99.1
+  dhcp_pools: []
+  vlans:
+    10: USERS_10
+    20: USERS_20
+    99: MGMT
+    999: NATIVE_VLAN
+  hostname: SW2
+- name: PC1
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC2
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC3
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC4
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC5
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: 192.168.99.10/24
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+rollback_scope: device-only

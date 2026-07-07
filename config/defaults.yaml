@@ -1,0 +1,15 @@
+# ===================================================================
+# NetAgent - Global Default Configuration Settings
+# ===================================================================
+
+# Default domain name for Cisco IOS devices and switches
+domain_name: "cisco.com"
+
+# Default settings for Port Security when 'PORT_SECURITY: true' is enabled
+port_security_max: 2
+port_security_violation: "restrict" # Options: restrict, shutdown, protect
+port_security_mac_sticky: true # Options: true, false
+
+# Default VTP Mode for Cisco Switches
+vtp_mode: "transparent" # Options: transparent, server, client, off
+

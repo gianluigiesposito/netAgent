@@ -1,0 +1,14 @@
+{# cisco_ios/helper_address.j2
+   Configura o rimuove ip helper-address su un'interfaccia Cisco IOS.
+   Usato per il DHCP relay (Fase 3 roadmap).
+   Variabili: iface, helper_ip, is_rollback
+#}
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+no ip helper-address {{ helper_ip }}
+{% else %}
+ip helper-address {{ helper_ip }}
+{% endif %}
+exit
+exit

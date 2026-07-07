@@ -1,0 +1,18 @@
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+ !
+ !
+ !
+ !
+ !
+{% else %}
+ switchport
+ no switchport trunk allowed vlan
+ no switchport trunk native vlan
+ no switchport mode
+ no switchport access vlan
+ no switchport trunk encapsulation dot1q
+{% endif %}
+exit
+exit

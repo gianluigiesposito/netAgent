@@ -1,0 +1,78 @@
+lab_reference: Lab_3_Cisco_Extension_With_Static_And_DHCP
+networks:
+  LAN_R1_A:
+    cidr: 1.10.0.0/24
+    gateway: 1.10.0.1
+  LAN_R1_B:
+    cidr: 128.50.0.0/24
+    gateway: 128.50.0.1
+  LAN_R2:
+    cidr: 100.64.10.0/24
+    gateway: 100.64.10.1
+  LAN_CISCO_DHCP:
+    cidr: 195.100.50.0/24
+    gateway: 195.100.50.1
+    dhcp:
+      enabled: true
+      pool_name: CISCO_POOL
+      dns: 8.8.8.8
+      lease: 1
+      excluded: [195.100.50.1, 195.100.50.10]
+  LAN_CISCO_DHCP2:
+    cidr: 195.100.60.0/24
+    gateway: 195.100.60.1
+    dhcp:
+      enabled: true
+      pool_name: CISCO_POOL2
+      dns: 8.8.8.8
+      lease: 1
+      excluded: [195.100.60.1]
+
+devices:
+  R1:
+    profile: frrouting
+    interfaces:
+      - {name: eth0, ip: 1.10.0.1/24}
+      - {name: eth2, ip: 128.50.0.1/24}
+      - {name: eth1, ip: 11.11.11.1/30}
+  R2:
+    profile: frrouting
+    interfaces:
+      - {name: eth0, ip: 100.64.10.1/24}
+      - {name: eth1, ip: 11.11.11.2/30}
+      - {name: eth2, ip: 12.12.12.1/30}
+  IOU1:
+    profile: cisco_ios
+    hostname: IOU1
+    interfaces:
+      - {name: Ethernet0/1, ip: 195.100.50.1/24}
+      - {name: Ethernet0/0, ip: 12.12.12.2/30}
+      - {name: Ethernet0/2, ip: 13.13.13.1/30}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  IOU2:
+    profile: cisco_ios
+    hostname: IOU2
+    interfaces:
+      - {name: Ethernet0/1, ip: 195.100.60.1/24}
+      - {name: Ethernet0/0, ip: 13.13.13.2/30}
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  Switch1:
+    profile: cisco_switch
+    hostname: Switch1
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  Switch2:
+    profile: cisco_switch
+    hostname: Switch2
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  Switch3:
+    profile: cisco_switch
+    hostname: Switch3
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  Switch4:
+    profile: cisco_switch
+    hostname: Switch4
+    credentials: {username: admin, password: cisco, enable_secret: cisco}
+  Switch5:
+    profile: cisco_switch
+    hostname: Switch5
+    credentials: {username: admin, password: cisco, enable_secret: cisco}

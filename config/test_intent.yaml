@@ -1,0 +1,7 @@
+devices:
+  - name: R1
+    profile: cisco_ios
+    interfaces:
+      - name: Ethernet0/0
+        ip: 192.168.1.1/24
+rollback_scope: all

@@ -1,0 +1,11 @@
+configure terminal
+{% if is_rollback %}
+no interface Port-channel{{ pc_id }}
+!
+exit
+{% else %}
+interface Port-channel{{ pc_id }}
+ switchport
+exit
+{% endif %}
+exit

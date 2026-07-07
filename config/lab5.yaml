@@ -1,0 +1,185 @@
+devices:
+- name: PC1
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: dhcp
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.10.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC2
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: dhcp
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.10.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC3
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: dhcp
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.20.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC4
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: dhcp
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.20.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC5
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: dhcp
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.30.1
+  dhcp_pools: []
+  vlans: {}
+- name: PC6
+  profile: vpcs
+  interfaces:
+  - name: e0
+    ip: 192.168.99.5/28
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.99.1
+  dhcp_pools: []
+  vlans: {}
+- name: R1
+  profile: cisco_ios
+  interfaces:
+  - name: e0/0.10
+    ip: 192.168.10.1/24
+    vlan_id: 10
+    native_vlan: 1
+  - name: e0/0.20
+    ip: 192.168.20.1/24
+    vlan_id: 20
+    native_vlan: 1
+  - name: e0/0.30
+    ip: 192.168.30.1/24
+    vlan_id: 30
+    native_vlan: 1
+  - name: e0/0.99
+    ip: 192.168.99.1/28
+    vlan_id: 99
+    native_vlan: 1
+  - name: e0/0
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools:
+  - name: POOL_10
+    network: 192.168.10.0/24
+    gateway: 192.168.10.1
+    dns: 8.8.8.8
+    lease: 1
+  - name: POOL_20
+    network: 192.168.20.0/24
+    gateway: 192.168.20.1
+    dns: 8.8.8.8
+    lease: 1
+  - name: POOL_30
+    network: 192.168.30.0/24
+    gateway: 192.168.30.1
+    dns: 8.8.8.8
+    lease: 1
+  vlans: {}
+  hostname: R1
+  banner: Forza Napoli Sempre
+  enable_secret: cisco
+  domain_name: cisco.com
+- name: SW1
+  profile: cisco_switch
+  interfaces:
+  - name: e0/0
+    mode: trunk
+    trunk_vlans:
+    - 10
+    - 20
+    - 30
+    - 99
+    native_vlan: 999
+  - name: e0/1
+    mode: access
+    access_vlan: 10
+    native_vlan: 1
+  - name: e0/2
+    mode: access
+    access_vlan: 10
+    native_vlan: 1
+  - name: e0/3
+    mode: access
+    access_vlan: 20
+    native_vlan: 1
+  - name: e1/0
+    mode: access
+    access_vlan: 20
+    native_vlan: 1
+  - name: e1/1
+    mode: access
+    access_vlan: 30
+    native_vlan: 1
+  - name: e1/2
+    mode: access
+    access_vlan: 99
+    native_vlan: 1
+  - name: Vlan99
+    ip: 192.168.99.2/28
+    native_vlan: 1
+  static_routes:
+  - network: 0.0.0.0/0
+    next_hop: 192.168.99.1
+  dhcp_pools: []
+  vlans:
+    10: Clienti_A
+    20: Clienti_B
+    30: Clienti_C
+    99: Management
+    999: BlackHole_Native
+  hostname: SW1
+  banner: Forza Napoli Sempre
+  enable_secret: cisco
+  domain_name: cisco.com
+links:
+- endpoints:
+  - R1:e0/0
+  - SW1:e0/0
+- endpoints:
+  - SW1:e0/1
+  - PC1:e0
+- endpoints:
+  - SW1:e0/2
+  - PC2:e0
+- endpoints:
+  - SW1:e0/3
+  - PC3:e0
+- endpoints:
+  - SW1:e1/0
+  - PC4:e0
+- endpoints:
+  - SW1:e1/1
+  - PC5:e0
+- endpoints:
+  - SW1:e1/2
+  - PC6:e0
+rollback_scope: all

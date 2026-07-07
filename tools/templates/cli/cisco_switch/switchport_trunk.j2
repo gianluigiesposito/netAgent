@@ -1,0 +1,32 @@
+{# cisco_switch/switchport_trunk.j2
+   Configura o rimuove una porta trunk su uno switch Cisco.
+
+   La lista trunk_vlans viene passata come lista di interi.
+   Il rollback riporta la porta in modalità access VLAN 1.
+
+   Variabili: iface, trunk_vlans (list[int]), native_vlan (int),
+              is_rollback
+#}
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+ !
+ no switchport trunk allowed vlan
+ no switchport trunk native vlan
+ switchport mode access
+ {% if native_vlan and native_vlan != 1 %}
+ !
+ {% endif %}
+{% else %}
+ switchport
+ no switchport access vlan
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan {{ trunk_vlans | join(',') }}
+ {% if native_vlan and native_vlan != 1 %}
+ switchport trunk native vlan {{ native_vlan }}
+ {% endif %}
+ no shutdown
+{% endif %}
+exit
+exit

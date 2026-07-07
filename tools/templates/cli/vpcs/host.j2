@@ -1,0 +1,14 @@
+{# vpcs/host.j2
+   Configura un host VPCS con IP statico o DHCP.
+   Variabili: mode ('static' | 'dhcp'), ip, mask, gateway, is_rollback
+#}
+{% if is_rollback %}
+clear ip
+save
+{% elif mode == 'dhcp' %}
+ip dhcp
+save
+{% else %}
+ip {{ ip }} {{ mask }} {{ gateway }}
+save
+{% endif %}

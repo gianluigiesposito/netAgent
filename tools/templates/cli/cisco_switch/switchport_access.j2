@@ -1,0 +1,40 @@
+{# cisco_switch/switchport_access.j2
+   Configura o rimuove una porta access su uno switch Cisco.
+
+   Il rollback ripristina la porta in modalità access sulla VLAN 1
+   (default Cisco) invece di rimuovere completamente la configurazione,
+   per evitare di lasciare porte in stato imprevedibile.
+
+   Variabili: iface, access_vlan, port_security, port_security_max,
+              port_security_violation, portfast, bpduguard, is_rollback
+#}
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+no switchport access vlan
+switchport mode access
+no switchport port-security
+no spanning-tree portfast
+no spanning-tree bpduguard enable
+{% else %}
+no switchport trunk allowed vlan
+no switchport trunk native vlan
+no switchport trunk encapsulation dot1q
+switchport mode access
+switchport access vlan {{ access_vlan }}
+{% if port_security %}
+switchport port-security
+switchport port-security maximum {{ port_security_max }}
+switchport port-security mac-address sticky
+switchport port-security violation {{ port_security_violation }}
+{% endif %}
+{% if portfast %}
+spanning-tree portfast
+{% endif %}
+{% if bpduguard %}
+spanning-tree bpduguard enable
+{% endif %}
+no shutdown
+{% endif %}
+exit
+exit

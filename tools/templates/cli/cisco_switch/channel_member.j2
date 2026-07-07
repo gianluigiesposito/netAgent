@@ -1,0 +1,28 @@
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+ {% if remove %}
+  switchport
+  channel-group {{ pc_id }} mode {{ mode }}
+ {% else %}
+  {% if old_group is defined and old_group %}
+  channel-group {{ old_group }} mode {{ old_mode }}
+  {% else %}
+  no channel-group {{ pc_id }}
+  {% endif %}
+ {% endif %}
+{% else %}
+ {% if remove %}
+  {% if old_group is defined and old_group %}
+  no channel-group {{ old_group }}
+  {% else %}
+  no channel-group {{ pc_id }}
+  {% endif %}
+ {% else %}
+  switchport
+  channel-group {{ pc_id }} mode {{ mode }}
+ {% endif %}
+{% endif %}
+exit
+exit
+

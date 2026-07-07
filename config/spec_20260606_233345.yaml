@@ -1,0 +1,47 @@
+devices:
+  - name: FRR8.2.2-1
+    profile: frrouting
+  - name: FRR8.2.2-2
+    profile: frrouting
+  - name: IOU1
+    profile: cisco_ios
+  - name: IOU2
+    profile: cisco_ios
+  - name: Switch1
+    profile: cisco_switch
+  - name: Switch2
+    profile: cisco_switch
+  - name: Switch3
+    profile: cisco_switch
+  - name: Switch4
+    profile: cisco_switch
+  - name: Switch5
+    profile: cisco_switch
+  - name: PC1, PC2, PC3, PC4, PC5, PC6, PC9, PC10, PC11, PC12, PC13, PC14, PC15, PC16, PC17
+    profile: vpcs
+
+links:
+  - endpoints: [FRR8.2.2-1:eth0, Switch1:e0/0]
+  - endpoints: [FRR8.2.2-1:eth2, Switch4:e0/0]
+  - endpoints: [FRR8.2.2-1:eth1, FRR8.2.2-2:eth1]
+  - endpoints: [FRR8.2.2-2:eth0, Switch3:e0/0]
+  - endpoints: [FRR8.2.2-2:eth2, IOU1:e0/0]
+  - endpoints: [IOU1:e0/1, IOU2:e0/0]
+  - endpoints: [IOU1:e0/2, Switch2:e0/0]
+  - endpoints: [IOU2:e0/1, Switch5:e0/1]
+  - endpoints: [Switch1:e0/1, PC4:e0]
+  - endpoints: [Switch1:e0/2, PC1:e0]
+  - endpoints: [Switch1:e0/3, PC3:e0]
+  - endpoints: [Switch2:e0/1, PC11:e0]
+  - endpoints: [Switch2:e0/2, PC10:e0]
+  - endpoints: [Switch2:e0/3, PC16:e0]
+  - endpoints: [Switch2:e1/0, PC17:e0]
+  - endpoints: [Switch3:e0/1, PC5:e0]
+  - endpoints: [Switch3:e0/2, PC2:e0]
+  - endpoints: [Switch3:e0/3, PC6:e0]
+  - endpoints: [Switch4:e0/1, PC(top):e0]
+  - endpoints: [Switch4:e0/2, PC9:e0]
+  - endpoints: [Switch5:e0/0, PC14:e0]
+  - endpoints: [Switch5:e0/1, PC12:e0]
+  - endpoints: [Switch5:e0/2, PC15:e0]
+  - endpoints: [Switch5:e1/0, PC13:e0]

@@ -1,0 +1,26 @@
+[
+  {
+    "role": "user",
+    "content": "Inizia il dialogo."
+  },
+  {
+    "role": "assistant",
+    "content": "Buongiorno! Sono il tuo **NetAgent Spec Wizard**. Sono qui per aiutarti a progettare la tua rete virtuale e generare il file di specifica pronto per il deployment.\n\nPer iniziare, definiamo il contesto: **qual è il nome del laboratorio che vuoi creare e qual è l'obiettivo principale della topologia (es. routing inter-VLAN, simulazione di una rete aziendale, ecc.)?**"
+  },
+  {
+    "role": "user",
+    "content": "fixa il dhcp.Voglio relay agent con server su R2"
+  },
+  {
+    "role": "assistant",
+    "content": "Ottimo, procediamo con la configurazione del DHCP Relay.\n\nPer strutturare correttamente la topologia, ho bisogno di conoscere i dispositivi coinvolti:\n\n1. **Quanti router utilizzeremo?** (Hai già citato R2 come server, quindi immagino almeno un R1 che farà da gateway/relay).\n2. **Che tipo di dispositivi sono?** (es. Cisco IOS, FRRouting).\n3. **Quante reti LAN dobbiamo servire?** (Per favore, indicami il CIDR di ciascuna rete che dovrà ricevere gli indirizzi dal server DHCP su R2).\n\nIniziamo definendo i router e le reti LAN."
+  },
+  {
+    "role": "user",
+    "content": "mostra spec"
+  },
+  {
+    "role": "assistant",
+    "content": "Ecco una bozza della specifica basata sulle informazioni parziali che abbiamo (DHCP Relay con R2 come server e R1 come gateway/relay).\n\n**Nota:** La specifica è incompleta. Per completarla, ho bisogno di:\n1. Definire le interfacce di collegamento tra R1 e R2 (es. una rete /30).\n2. Definire le reti LAN collegate a R1 (quelle che necessitano del relay).\n3. Confermare il profilo dei dispositivi (es. Cisco IOS).\n4. Definire eventuali host (PC) nelle LAN.\n\n--- BOZZA SPECIFICA (INCOMPLETA) ---\n\n=== NETAGENT SYSTEM TARGET SPECIFICATION FILE ===\nLAB_REFERENCE: <nome_lab_da_definire>\nTOPOLOGY_OBJECTIVE: Configurazione DHCP Relay con server su R2\n\n--- NETWORK: LAN_CLIENTS ---\nCIDR: <da_definire>\nGATEWAY: <ip_r1>\nROUTER: R1\nROUTER_INTERFACE: <iface_r1>\n\n--- NETWORK: LINK_R1_R2 ---\nCIDR: 10.0.0.0/30\nGATEWAY: 10.0.0.1\nROUTER: R1\nROUTER_INTERFACE: <iface_r1_link>\n\n--- DEVICE: R1 ---\nPROFILE: <cisco_ios|frrouting>\nINTERFACE: <iface_lan>\nIP_ADDRESS: <ip_gateway/cidr>\nCONNECT_TO_NETWORKS: LAN_CLIENTS\nDHCP_RELAY: <cidr_lan_clients>\nDHCP_SERVER: R2\n\n--- DEVICE: R2 ---\nPROFILE: <cisco_ios|frrouting>\nINTERFACE: <iface_link>\nIP_ADDRESS: 10.0.0.2/30\nCONNECT_TO_NETWORKS: LINK_R1_R2\n# Qui andranno definiti i DHCP POOL\n\n---\n\n**Cosa manca per procedere?**\n- Quali sono i CIDR esatti delle reti LAN?\n- Quali interfacce fisiche useremo per collegare R1 e R2?\n- Vuoi aggiungere sicurezza SSH sui router?"
+  }
+]

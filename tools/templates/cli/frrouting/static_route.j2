@@ -1,0 +1,11 @@
+{# frrouting/static_route.j2
+   Aggiunge o rimuove una rotta statica FRR.
+   Variabili: network, cidr, next_hop, is_rollback
+#}
+configure terminal
+{% if is_rollback %}
+no ip route {{ network }}/{{ cidr }} {{ next_hop }}
+{% else %}
+ip route {{ network }}/{{ cidr }} {{ next_hop }}
+{% endif %}
+exit

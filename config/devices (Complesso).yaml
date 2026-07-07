@@ -1,0 +1,178 @@
+# config/devices.yaml
+# ===================================================================
+# NetAgent - Inventario Dispositivi (Topologia Aggiornata)
+# ===================================================================
+
+# --- CORE ROUTERS (FRRouting Linux Containers) ---
+R1:
+  connection_type: "telnet"
+  host: "127.0.0.1"
+  port: 5002
+  vendor: "frrouting"
+
+R2:
+  connection_type: "telnet"
+  host: "127.0.0.1"
+  port: 5004
+  vendor: "frrouting"
+
+# --- CISCO CORE ROUTER (IOS on Unix IOU) ---
+IOU1:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5033
+  vendor: "cisco_ios"
+  username: "admin"
+  password: "cisco"
+
+IOU2:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5038
+  vendor: "cisco_ios"
+  username: "admin"
+  password: "cisco"
+
+# --- CISCO ACCESS SWITCHES ---
+Switch1:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5039
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+Switch2:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5032
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+Switch3:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5035
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+Switch4:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5037
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+Switch5:
+  connection_type: "cisco_telnet"
+  host: "127.0.0.1"
+  port: 5040
+  vendor: "cisco_switch"
+  username: "admin"
+  password: "cisco"
+
+# --- TERMINAL CLIENTS (VPCS Nodes 1-17) ---
+PC1:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5000
+  vendor: "vpcs"
+
+PC2:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5006
+  vendor: "vpcs"
+
+PC3:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5016
+  vendor: "vpcs"
+
+PC4:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5018
+  vendor: "vpcs"
+
+PC5:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5020
+  vendor: "vpcs"
+
+PC6:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5022
+  vendor: "vpcs"
+
+PC7:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5027
+  vendor: "vpcs"
+
+PC8:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5029
+  vendor: "vpcs"
+
+PC9:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5031
+  vendor: "vpcs"
+
+PC10:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5034
+  vendor: "vpcs"
+
+PC11:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5036
+  vendor: "vpcs"
+
+PC12:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5041
+  vendor: "vpcs"
+
+PC13:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5043
+  vendor: "vpcs"
+
+PC14:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5023
+  vendor: "vpcs"
+
+PC15:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5025
+  vendor: "vpcs"
+
+PC16:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5028
+  vendor: "vpcs"
+
+PC17:
+  connection_type: "vpcs_telnet"
+  host: "127.0.0.1"
+  port: 5042
+  vendor: "vpcs"

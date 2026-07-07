@@ -1,0 +1,421 @@
+# ====================================================================================
+# NETAGENT TARGET SPECIFICATION - FORMATO DICHIARATIVO COMPATTO
+# ====================================================================================
+# Idea: dai un nome alle reti, assegna i PC alle reti e dichiara quali reti devono
+# essere raggiungibili. NetAgent espande la specifica in piano deterministico.
+#
+# v2 — Aggiunta segmentazione VLAN con inter-VLAN routing (router-on-a-stick):
+#
+#   VLAN 10  — LAN_R1_A   (195.100.10.0/24)  — relay verso R1/R2 via IOU1
+#   VLAN 20  — LAN_R2_EXT (195.100.20.0/24)  — relay verso R1/R2 via IOU2
+#   VLAN 50  — LAN_CISCO_DHCP  (195.100.50.0/24) — DHCP server su IOU1
+#   VLAN 60  — LAN_CISCO_DHCP2 (195.100.60.0/24) — DHCP server su IOU2
+#
+#   IOU1 Ethernet0/1 → trunk dot1Q → Switch1, Switch2
+#     .10  gateway VLAN 10
+#     .50  gateway VLAN 50  (DHCP server LAN_CISCO_DHCP)
+#
+#   IOU2 Ethernet0/1 → trunk dot1Q → Switch3, Switch4, Switch5
+#     .20  gateway VLAN 20
+#     .60  gateway VLAN 60  (DHCP server LAN_CISCO_DHCP2)
+#
+#   Switch uplink (Ethernet0/0): trunk VLAN 10,50 o 20,60 verso IOU
+#   Switch access port (Ethernet0/1..3): access VLAN 50 o 60 per i PC DHCP
+# ====================================================================================
+
+=== NETAGENT SYSTEM TARGET SPECIFICATION FILE ===
+LAB_REFERENCE: Lab_4_Cisco_VLAN_RouterOnAStick
+TOPOLOGY_OBJECTIVE: Full Multi-Vendor Reachability with VLAN Segmentation and Inter-VLAN Routing
+
+# ──────────────────────────────────────────────────────────────────────────────
+# NETWORK DEFINITIONS
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- NETWORK: LAN_R1_A ---
+CIDR: 1.10.0.0/24
+GATEWAY: 1.10.0.1
+ROUTER: R1
+ROUTER_INTERFACE: eth0
+
+--- NETWORK: LAN_R1_B ---
+CIDR: 128.50.0.0/24
+GATEWAY: 128.50.0.1
+ROUTER: R1
+ROUTER_INTERFACE: eth2
+
+--- NETWORK: LAN_R2 ---
+CIDR: 100.64.10.0/24
+GATEWAY: 100.64.10.1
+ROUTER: R2
+ROUTER_INTERFACE: eth0
+
+--- NETWORK: LAN_CISCO_DHCP ---
+CIDR: 195.100.50.0/24
+GATEWAY: 195.100.50.1
+ROUTER: IOU1
+ROUTER_INTERFACE: Ethernet0/1
+VLAN_ID: 50
+VLAN_NAME: DHCP_IOU1
+DHCP: true
+DHCP_POOL_NAME: CISCO_POOL
+DHCP_DNS: 8.8.8.8
+DHCP_LEASE: 1
+DHCP_EXCLUDED: 195.100.50.1 195.100.50.10
+
+--- NETWORK: LAN_CISCO_DHCP2 ---
+CIDR: 195.100.60.0/24
+GATEWAY: 195.100.60.1
+ROUTER: IOU2
+ROUTER_INTERFACE: Ethernet0/1
+VLAN_ID: 60
+VLAN_NAME: DHCP_IOU2
+DHCP: true
+DHCP_POOL_NAME: CISCO_POOL2
+DHCP_DNS: 8.8.8.8
+DHCP_LEASE: 1
+DHCP_EXCLUDED: 195.100.60.1
+
+--- NETWORK: VLAN10_IOU1 ---
+CIDR: 195.100.10.0/24
+GATEWAY: 195.100.10.1
+ROUTER: IOU1
+ROUTER_INTERFACE: Ethernet0/1
+VLAN_ID: 10
+VLAN_NAME: MGMT_IOU1
+
+--- NETWORK: VLAN20_IOU2 ---
+CIDR: 195.100.20.0/24
+GATEWAY: 195.100.20.1
+ROUTER: IOU2
+ROUTER_INTERFACE: Ethernet0/1
+VLAN_ID: 20
+VLAN_NAME: MGMT_IOU2
+
+# ──────────────────────────────────────────────────────────────────────────────
+# HOST DEVICES (VPCS)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: PC1 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_A
+IP_ADDRESS: 1.10.0.11/24
+GATEWAY: 1.10.0.1
+
+--- DEVICE: PC3 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_A
+IP_ADDRESS: 1.10.0.13/24
+GATEWAY: 1.10.0.1
+
+--- DEVICE: PC4 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_A
+IP_ADDRESS: 1.10.0.14/24
+GATEWAY: 1.10.0.1
+
+--- DEVICE: PC7 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_B
+IP_ADDRESS: 128.50.0.17/24
+GATEWAY: 128.50.0.1
+
+--- DEVICE: PC8 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_B
+IP_ADDRESS: 128.50.0.18/24
+GATEWAY: 128.50.0.1
+
+--- DEVICE: PC9 ---
+PROFILE: vpcs
+NETWORK: LAN_R1_B
+IP_ADDRESS: 128.50.0.19/24
+GATEWAY: 128.50.0.1
+
+--- DEVICE: PC2 ---
+PROFILE: vpcs
+NETWORK: LAN_R2
+IP_ADDRESS: 100.64.10.12/24
+GATEWAY: 100.64.10.1
+
+--- DEVICE: PC5 ---
+PROFILE: vpcs
+NETWORK: LAN_R2
+IP_ADDRESS: 100.64.10.15/24
+GATEWAY: 100.64.10.1
+
+--- DEVICE: PC6 ---
+PROFILE: vpcs
+NETWORK: LAN_R2
+IP_ADDRESS: 100.64.10.16/24
+GATEWAY: 100.64.10.1
+
+--- DEVICE: PC10 ---
+PROFILE: vpcs
+NETWORK: LAN_CISCO_DHCP
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC11 ---
+PROFILE: vpcs
+NETWORK: LAN_CISCO_DHCP
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC12 ---
+PROFILE: vpcs
+NETWORK: LAN_CISCO_DHCP2
+IP_ADDRESS: DHCP
+
+--- DEVICE: PC13 ---
+PROFILE: vpcs
+NETWORK: LAN_CISCO_DHCP2
+IP_ADDRESS: DHCP
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FRROUTING ROUTERS (invariati)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: R1 ---
+PROFILE: frrouting
+INTERFACE: eth1
+IP_ADDRESS: 11.11.11.1/30
+CONNECT_TO_NETWORKS: LAN_R2, LAN_CISCO_DHCP, LAN_CISCO_DHCP2, VLAN10_IOU1, VLAN20_IOU2
+CONFIGURAZIONE_BASE: true
+
+--- DEVICE: R2 ---
+PROFILE: frrouting
+INTERFACE: eth1
+IP_ADDRESS: 11.11.11.2/30
+INTERFACE: eth2
+IP_ADDRESS: 12.12.12.1/30
+CONNECT_TO_NETWORKS: LAN_R1_A, LAN_R1_B, LAN_CISCO_DHCP, LAN_CISCO_DHCP2, VLAN20_IOU2, VLAN10_IOU1
+CONFIGURAZIONE_BASE: true
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CISCO IOU ROUTERS — Router-on-a-Stick
+# Ethernet0/1 diventa trunk dot1Q verso gli switch.
+# Le subinterface sono generate automaticamente dal spec_parser
+# tramite i blocchi NETWORK con VLAN_ID e ROUTER_INTERFACE=Ethernet0/1.
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: IOU1 ---
+PROFILE: cisco_ios
+# Uplink verso R2
+INTERFACE: Ethernet0/0
+IP_ADDRESS: 12.12.12.2/30
+# Uplink verso IOU2
+INTERFACE: Ethernet0/2
+IP_ADDRESS: 13.13.13.1/30
+# Subinterface VLAN 10 — MGMT/routing
+SUBINTERFACE: Ethernet0/1.10 VLAN 10 IP 195.100.10.1/24
+# Subinterface VLAN 50 — LAN DHCP (sostituisce Ethernet0/1 flat)
+SUBINTERFACE: Ethernet0/1.50 VLAN 50 IP 195.100.50.1/24
+CONNECT_TO_NETWORKS: LAN_R1_A, LAN_R1_B, LAN_R2, LAN_CISCO_DHCP2, VLAN20_IOU2
+CONFIGURAZIONE_BASE: true
+HOSTNAME: IOU1
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+#PASSWORD_MIN_LENGTH: 8
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+#NO_CDP_RUN: true
+
+--- DEVICE: IOU2 ---
+PROFILE: cisco_ios
+# Uplink verso IOU1
+INTERFACE: Ethernet0/0
+IP_ADDRESS: 13.13.13.2/30
+# Subinterface VLAN 20 — MGMT/routing
+SUBINTERFACE: Ethernet0/1.20 VLAN 20 IP 195.100.20.1/24
+# Subinterface VLAN 60 — LAN DHCP2 (sostituisce Ethernet0/1 flat)
+SUBINTERFACE: Ethernet0/1.60 VLAN 60 IP 195.100.60.1/24
+CONNECT_TO_NETWORKS: LAN_R1_A, LAN_R1_B, LAN_R2, LAN_CISCO_DHCP, VLAN10_IOU1
+CONFIGURAZIONE_BASE: true
+HOSTNAME: IOU2
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+#PASSWORD_MIN_LENGTH: 8
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+#NO_CDP_RUN: true
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CISCO SWITCH — IOU1 side (Switch1, Switch2)
+# Uplink Ethernet0/0: trunk VLAN 10,50
+# Access Ethernet0/1-3: VLAN 50 (PC DHCP su LAN_CISCO_DHCP)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: Switch1 ---
+PROFILE: cisco_switch
+VLANS: 10 MGMT_IOU1, 50 DHCP_IOU1
+TRUNK_PORT: Ethernet0/0 VLANS 10,50 NATIVE 1
+ACCESS_PORT: Ethernet0/1 50
+ACCESS_PORT: Ethernet0/2 50
+ACCESS_PORT: Ethernet0/3 50
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch1
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+DHCP_SNOOPING_VLANS: 50
+TRUSTED_PORTS: Ethernet0/0
+#PORT_SECURITY: true
+#PORT_SECURITY_MAX: 2
+#PORT_SECURITY_VIOLATION: restrict
+#PORTFAST: true
+#BPDUGUARD: true
+
+--- DEVICE: Switch2 ---
+PROFILE: cisco_switch
+VLANS: 10 MGMT_IOU1, 50 DHCP_IOU1
+TRUNK_PORT: Ethernet0/0 VLANS 10,50 NATIVE 1
+ACCESS_PORT: Ethernet0/1 50
+ACCESS_PORT: Ethernet0/2 50
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch2
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+DHCP_SNOOPING_VLANS: 50
+TRUSTED_PORTS: Ethernet0/0
+#ARP_INSPECTION_VLANS: 50
+#DHCP_RATE_LIMIT: 10
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CISCO SWITCH — IOU2 side (Switch3, Switch4, Switch5)
+# Uplink Ethernet0/0: trunk VLAN 20,60
+# Access Ethernet0/1-3: VLAN 60 (PC DHCP su LAN_CISCO_DHCP2)
+# ──────────────────────────────────────────────────────────────────────────────
+
+--- DEVICE: Switch3 ---
+PROFILE: cisco_switch
+VLANS: 20 MGMT_IOU2, 60 DHCP_IOU2
+TRUNK_PORT: Ethernet0/0 VLANS 20,60 NATIVE 1
+ACCESS_PORT: Ethernet0/1 60
+ACCESS_PORT: Ethernet0/2 60
+ACCESS_PORT: Ethernet0/3 60
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch3
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+DHCP_SNOOPING_VLANS: 60
+TRUSTED_PORTS: Ethernet0/0
+#PORT_SECURITY: true
+#PORT_SECURITY_MAX: 2
+#PORT_SECURITY_VIOLATION: restrict
+#PORTFAST: true
+#BPDUGUARD: true
+
+--- DEVICE: Switch4 ---
+PROFILE: cisco_switch
+VLANS: 20 MGMT_IOU2, 60 DHCP_IOU2
+TRUNK_PORT: Ethernet0/0 VLANS 20,60 NATIVE 1
+ACCESS_PORT: Ethernet0/1 60
+ACCESS_PORT: Ethernet0/2 60
+ACCESS_PORT: Ethernet0/3 60
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch4
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+DHCP_SNOOPING_VLANS: 60
+TRUSTED_PORTS: Ethernet0/0
+#PORT_SECURITY: true
+#PORT_SECURITY_MAX: 2
+#PORT_SECURITY_VIOLATION: restrict
+#PORTFAST: true
+#BPDUGUARD: true
+
+--- DEVICE: Switch5 ---
+PROFILE: cisco_switch
+VLANS: 20 MGMT_IOU2, 60 DHCP_IOU2
+TRUNK_PORT: Ethernet0/0 VLANS 20,60 NATIVE 1
+ACCESS_PORT: Ethernet0/1 60
+ACCESS_PORT: Ethernet0/2 60
+ACCESS_PORT: Ethernet0/3 60
+CONFIGURAZIONE_BASE: true
+HOSTNAME: Switch5
+BANNER: Accesso riservato - NetAgent
+ENABLE_SECRET: cisco
+DOMAIN_NAME: netagent.local
+SSH_USERNAME: admin
+SSH_PASSWORD: cisco
+SSH_TIMEOUT: 60
+SSH_RETRIES: 3
+LOGIN_BLOCK_FOR: 120
+LOGIN_ATTEMPTS: 3
+LOGIN_WITHIN: 60
+CONSOLE_TIMEOUT: 10 0
+VTY_TIMEOUT: 10 0
+VTY_LINES: 0 4
+SERVICE_PASSWORD_ENCRYPTION: true
+DHCP_SNOOPING_VLANS: 60
+TRUSTED_PORTS: Ethernet0/0
+#PORT_SECURITY: true
+#PORT_SECURITY_MAX: 2
+#PORT_SECURITY_VIOLATION: restrict
+#PORTFAST: true
+#BPDUGUARD: true

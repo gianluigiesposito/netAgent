@@ -1,0 +1,9 @@
+Value VLAN_ID (\d+)
+Value VLAN_NAME (\S+)
+Value STATUS (\S+)
+Value PORTS (.*)
+
+Start
+  ^\d+\s+\S+\s+\S+ -> Continue.Record
+  ^${VLAN_ID}\s+${VLAN_NAME}\s+${STATUS}\s+${PORTS}$$
+  ^${VLAN_ID}\s+${VLAN_NAME}\s+${STATUS}\s*$$

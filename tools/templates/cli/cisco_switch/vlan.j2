@@ -1,0 +1,16 @@
+{# cisco_switch/vlan.j2
+   Crea o rimuove una VLAN nel database locale dello switch Cisco.
+   Idempotente: se vlan_id esiste già con il nome corretto, il blocco
+   viene emesso solo se action_needed != "CORRECT" (controllo nel caller).
+
+   Variabili: vlan_id, vlan_name, is_rollback
+#}
+configure terminal
+{% if is_rollback %}
+no vlan {{ vlan_id }}
+{% else %}
+vlan {{ vlan_id }}
+name {{ vlan_name }}
+exit
+{% endif %}
+exit

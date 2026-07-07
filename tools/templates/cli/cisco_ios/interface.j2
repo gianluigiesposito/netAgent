@@ -1,0 +1,20 @@
+{# cisco_ios/interface.j2
+   Configura o rimuove un indirizzo IP su un'interfaccia Cisco IOS.
+   Variabili: iface, ip, mask, stale_ip, stale_mask, is_rollback
+   Nota: Cisco IOS usa dotted-decimal mask, non CIDR prefix notation.
+#}
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+no ip address {{ ip }} {{ mask }}
+shutdown
+exit
+{% else %}
+{% if stale_ip and stale_mask %}
+no ip address {{ stale_ip }} {{ stale_mask }}
+{% endif %}
+ip address {{ ip }} {{ mask }}
+no shutdown
+exit
+{% endif %}
+exit

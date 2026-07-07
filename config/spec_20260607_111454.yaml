@@ -1,0 +1,414 @@
+devices:
+- name: R1
+  profile: frrouting
+  interfaces:
+  - name: eth0
+    ip: 1.10.0.1/24
+    native_vlan: 1
+  - name: eth2
+    ip: 128.50.0.1/24
+    native_vlan: 1
+  - name: eth1
+    ip: 11.11.11.1/30
+    native_vlan: 1
+  static_routes:
+  - network: 100.64.10.0/24
+    next_hop: 11.11.11.2
+  - network: 195.100.50.0/24
+    next_hop: 11.11.11.2
+  - network: 195.100.60.0/24
+    next_hop: 11.11.11.2
+  dhcp_pools: []
+  vlans: {}
+- name: R2
+  profile: frrouting
+  interfaces:
+  - name: eth0
+    ip: 100.64.10.1/24
+    native_vlan: 1
+  - name: eth1
+    ip: 11.11.11.2/30
+    native_vlan: 1
+  - name: eth2
+    ip: 12.12.12.1/30
+    native_vlan: 1
+  static_routes:
+  - network: 1.10.0.0/24
+    next_hop: 11.11.11.1
+  - network: 128.50.0.0/24
+    next_hop: 11.11.11.1
+  - network: 195.100.50.0/24
+    next_hop: 12.12.12.2
+  - network: 195.100.60.0/24
+    next_hop: 12.12.12.2
+  dhcp_pools: []
+  vlans: {}
+- name: IOU1
+  profile: cisco_ios
+  interfaces:
+  - name: Ethernet0/1
+    ip: 195.100.50.1/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    ip: 12.12.12.2/30
+    native_vlan: 1
+  - name: Ethernet0/2
+    ip: 13.13.13.1/30
+    native_vlan: 1
+  static_routes:
+  - network: 1.10.0.0/24
+    next_hop: 12.12.12.1
+  - network: 128.50.0.0/24
+    next_hop: 12.12.12.1
+  - network: 100.64.10.0/24
+    next_hop: 12.12.12.1
+  - network: 195.100.60.0/24
+    next_hop: 13.13.13.2
+  dhcp_pools: []
+  vlans: {}
+  hostname: IOU1
+- name: IOU2
+  profile: cisco_ios
+  interfaces:
+  - name: Ethernet0/1
+    ip: 195.100.60.1/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    ip: 13.13.13.2/30
+    native_vlan: 1
+  static_routes:
+  - network: 1.10.0.0/24
+    next_hop: 13.13.13.1
+  - network: 128.50.0.0/24
+    next_hop: 13.13.13.1
+  - network: 100.64.10.0/24
+    next_hop: 13.13.13.1
+  - network: 195.100.50.0/24
+    next_hop: 13.13.13.1
+  dhcp_pools: []
+  vlans: {}
+  hostname: IOU2
+- name: Switch1
+  profile: cisco_switch
+  interfaces:
+  - name: Vlan1
+    ip: 195.100.50.2/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    native_vlan: 1
+  - name: Ethernet0/1
+    native_vlan: 1
+  - name: Ethernet0/2
+    native_vlan: 1
+  - name: Ethernet0/3
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+  hostname: Switch1
+- name: Switch2
+  profile: cisco_switch
+  interfaces:
+  - name: Vlan1
+    ip: 195.100.50.3/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    native_vlan: 1
+  - name: Ethernet0/1
+    native_vlan: 1
+  - name: Ethernet0/2
+    native_vlan: 1
+  - name: Ethernet0/3
+    native_vlan: 1
+  - name: Ethernet1/0
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+  hostname: Switch2
+- name: Switch3
+  profile: cisco_switch
+  interfaces:
+  - name: Vlan1
+    ip: 100.64.10.2/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    native_vlan: 1
+  - name: Ethernet0/1
+    native_vlan: 1
+  - name: Ethernet0/2
+    native_vlan: 1
+  - name: Ethernet0/3
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+  hostname: Switch3
+- name: Switch4
+  profile: cisco_switch
+  interfaces:
+  - name: Vlan1
+    ip: 195.100.50.4/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    native_vlan: 1
+  - name: Ethernet0/1
+    native_vlan: 1
+  - name: Ethernet0/2
+    native_vlan: 1
+  - name: Ethernet0/3
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+  hostname: Switch4
+- name: Switch5
+  profile: cisco_switch
+  interfaces:
+  - name: Vlan1
+    ip: 195.100.60.3/24
+    native_vlan: 1
+  - name: Ethernet0/0
+    native_vlan: 1
+  - name: Ethernet0/1
+    native_vlan: 1
+  - name: Ethernet0/2
+    native_vlan: 1
+  - name: Ethernet0/3
+    native_vlan: 1
+  - name: Ethernet1/0
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+  hostname: Switch5
+- name: PC1
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC2
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC3
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC4
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC5
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC6
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC7
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC8
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC9
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC10
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC11
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC12
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC13
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC14
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC15
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC16
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+- name: PC17
+  profile: vpcs
+  interfaces:
+  - name: eth0
+    ip: dhcp
+    native_vlan: 1
+  static_routes: []
+  dhcp_pools: []
+  vlans: {}
+links:
+- endpoints:
+  - R1:eth0
+  - Switch1:Ethernet0/0
+- endpoints:
+  - R1:eth1
+  - R2:eth1
+- endpoints:
+  - R1:eth2
+  - Switch4:Ethernet0/0
+- endpoints:
+  - R2:eth0
+  - Switch3:Ethernet0/0
+- endpoints:
+  - R2:eth2
+  - IOU1:Ethernet0/0
+- endpoints:
+  - IOU1:Ethernet0/1
+  - Switch2:Ethernet0/0
+- endpoints:
+  - IOU1:Ethernet0/2
+  - IOU2:Ethernet0/0
+- endpoints:
+  - IOU2:Ethernet0/1
+  - Switch5:Ethernet0/0
+- endpoints:
+  - Switch1:Ethernet0/1
+  - PC4:eth0
+- endpoints:
+  - Switch1:Ethernet0/2
+  - PC1:eth0
+- endpoints:
+  - Switch1:Ethernet0/3
+  - PC3:eth0
+- endpoints:
+  - Switch2:Ethernet0/1
+  - PC11:eth0
+- endpoints:
+  - Switch2:Ethernet0/2
+  - PC10:eth0
+- endpoints:
+  - Switch2:Ethernet0/3
+  - PC16:eth0
+- endpoints:
+  - Switch2:Ethernet1/0
+  - PC17:eth0
+- endpoints:
+  - Switch3:Ethernet0/1
+  - PC5:eth0
+- endpoints:
+  - Switch3:Ethernet0/2
+  - PC2:eth0
+- endpoints:
+  - Switch3:Ethernet0/3
+  - PC6:eth0
+- endpoints:
+  - Switch4:Ethernet0/1
+  - PC7:eth0
+- endpoints:
+  - Switch4:Ethernet0/2
+  - PC8:eth0
+- endpoints:
+  - Switch4:Ethernet0/3
+  - PC9:eth0
+- endpoints:
+  - Switch5:Ethernet0/1
+  - PC12:eth0
+- endpoints:
+  - Switch5:Ethernet0/2
+  - PC15:eth0
+- endpoints:
+  - Switch5:Ethernet0/3
+  - PC14:eth0
+- endpoints:
+  - Switch5:Ethernet1/0
+  - PC13:eth0
+rollback_scope: all

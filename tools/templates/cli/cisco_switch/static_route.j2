@@ -1,0 +1,28 @@
+{# cisco_switch/static_route.j2
+   Configura il gateway/rotta di default su uno switch Cisco.
+   Variabili: network, mask, next_hop, stale_next_hop, is_rollback
+#}
+configure terminal
+{% set is_default = (network == "0.0.0.0" and (mask == "0.0.0.0" or mask == "")) %}
+{% if is_rollback %}
+{% if is_default %}
+no ip default-gateway {{ next_hop }}
+{% else %}
+no ip route {{ network }} {{ mask }} {{ next_hop }}
+{% endif %}
+{% else %}
+{% if stale_next_hop %}
+{% if is_default %}
+no ip default-gateway {{ stale_next_hop }}
+{% else %}
+no ip route {{ network }} {{ mask }} {{ stale_next_hop }}
+{% endif %}
+{% endif %}
+{% if is_default %}
+no ip routing
+ip default-gateway {{ next_hop }}
+{% else %}
+ip route {{ network }} {{ mask }} {{ next_hop }}
+{% endif %}
+{% endif %}
+exit

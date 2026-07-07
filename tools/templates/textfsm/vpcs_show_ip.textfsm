@@ -1,0 +1,9 @@
+Value IP (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
+Value CIDR (\d+)
+Value GATEWAY (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
+
+Start
+  ^IP/MASK\s*:\s*${IP}/${CIDR} -> Continue
+  ^GATEWAY\s*:\s*${GATEWAY}
+  ^IP/MASK\s*:\s*${IP}/${CIDR}$$
+  ^\s*${IP}/${CIDR} -> Record

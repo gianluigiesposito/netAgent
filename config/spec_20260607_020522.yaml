@@ -1,0 +1,106 @@
+nodes:
+  - name: R1
+    type: frrouting
+    interfaces: [eth0, eth1, eth2]
+  - name: R2
+    type: frrouting
+    interfaces: [eth0, eth1, eth2]
+  - name: IOU1
+    type: cisco_ios
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2]
+  - name: IOU2
+    type: cisco_ios
+    interfaces: [Ethernet0/0, Ethernet0/1]
+  - name: Switch1
+    type: cisco_switch
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2, Ethernet0/3]
+  - name: Switch2
+    type: cisco_switch
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2, Ethernet0/3, Ethernet1/0]
+  - name: Switch3
+    type: cisco_switch
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2, Ethernet0/3]
+  - name: Switch4
+    type: cisco_switch
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2, Ethernet0/3]
+  - name: Switch5
+    type: cisco_switch
+    interfaces: [Ethernet0/0, Ethernet0/1, Ethernet0/2, Ethernet0/3, Ethernet1/0]
+  - name: PC1
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC2
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC3
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC4
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC5
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC6
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC7
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC8
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC9
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC10
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC11
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC12
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC13
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC14
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC15
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC16
+    type: vpcs
+    interfaces: [eth0]
+  - name: PC17
+    type: vpcs
+    interfaces: [eth0]
+
+links:
+  - endpoints: ["R1:eth0", "Switch1:Ethernet0/0"]
+  - endpoints: ["R1:eth1", "R2:eth1"]
+  - endpoints: ["R1:eth2", "Switch4:Ethernet0/0"]
+  - endpoints: ["R2:eth0", "Switch3:Ethernet0/0"]
+  - endpoints: ["R2:eth2", "IOU1:Ethernet0/0"]
+  - endpoints: ["IOU1:Ethernet0/1", "Switch2:Ethernet0/0"]
+  - endpoints: ["IOU1:Ethernet0/2", "IOU2:Ethernet0/0"]
+  - endpoints: ["IOU2:Ethernet0/1", "Switch5:Ethernet0/0"]
+  - endpoints: ["Switch1:Ethernet0/1", "PC4:eth0"]
+  - endpoints: ["Switch1:Ethernet0/2", "PC1:eth0"]
+  - endpoints: ["Switch1:Ethernet0/3", "PC3:eth0"]
+  - endpoints: ["Switch2:Ethernet0/1", "PC11:eth0"]
+  - endpoints: ["Switch2:Ethernet0/2", "PC10:eth0"]
+  - endpoints: ["Switch2:Ethernet0/3", "PC16:eth0"]
+  - endpoints: ["Switch2:Ethernet1/0", "PC17:eth0"]
+  - endpoints: ["Switch3:Ethernet0/1", "PC5:eth0"]
+  - endpoints: ["Switch3:Ethernet0/2", "PC2:eth0"]
+  - endpoints: ["Switch3:Ethernet0/3", "PC6:eth0"]
+  - endpoints: ["Switch4:Ethernet0/1", "PC7:eth0"]
+  - endpoints: ["Switch4:Ethernet0/2", "PC8:eth0"]
+  - endpoints: ["Switch4:Ethernet0/3", "PC9:eth0"]
+  - endpoints: ["Switch5:Ethernet0/1", "PC12:eth0"]
+  - endpoints: ["Switch5:Ethernet0/2", "PC15:eth0"]
+  - endpoints: ["Switch5:Ethernet0/3", "PC14:eth0"]
+  - endpoints: ["Switch5:Ethernet1/0", "PC13:eth0"]

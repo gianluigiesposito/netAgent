@@ -1,0 +1,7 @@
+Value GROUP (\d+)
+Value PORT_CHANNEL (\S+)
+Value PROTOCOL (\S+)
+Value PORTS (.*)
+
+Start
+  ^${GROUP}\s+${PORT_CHANNEL}\s+${PROTOCOL}\s+${PORTS}$$ -> Record

@@ -1,0 +1,25 @@
+{# frrouting/dhcp_pool.j2
+   Configura o rimuove un pool DHCP FRRouting IOS-like (vtysh).
+   Variabili: pool_name, network, netmask, default_router, dns_server,
+              lease_days, excluded_start, excluded_end, is_rollback
+#}
+{% if not is_rollback %}
+configure terminal
+{% if excluded_start %}
+ip dhcp excluded-address {{ excluded_start }} {{ excluded_end or excluded_start }}
+{% endif %}
+ip dhcp pool {{ pool_name }}
+network {{ network }} {{ netmask }}
+default-router {{ default_router }}
+dns-server {{ dns_server }}
+lease {{ lease_days }}
+exit
+exit
+{% else %}
+configure terminal
+no ip dhcp pool {{ pool_name }}
+{% if excluded_start %}
+no ip dhcp excluded-address {{ excluded_start }} {{ excluded_end or excluded_start }}
+{% endif %}
+exit
+{% endif %}

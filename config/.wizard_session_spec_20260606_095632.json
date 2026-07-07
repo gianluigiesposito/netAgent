@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Inizia il dialogo."
+  },
+  {
+    "role": "assistant",
+    "content": "Buongiorno! Sono il **NetAgent Spec Wizard**. Il mio compito è guidarti nella creazione di una specifica YAML per NetAgent che sia tecnicamente impeccabile, sicura e conforme alle migliori pratiche di networking.\n\nSeguirò rigorosamente le regole di validazione per prevenire misconfigurazioni (come errori su EtherChannel o mismatch di Native VLAN) e garantiremo che la sicurezza sia al primo posto (niente IP su VLAN 1, gestione corretta delle Native VLAN, ecc.).\n\nPer iniziare, descrivimi brevemente l'architettura che vuoi implementare:\n1. **Quali e quanti dispositivi prevedi di utilizzare?** (es. 2 Router, 2 Switch, 3 VPCs)\n2. **Qual è lo scopo principale della rete?** (es. segmentazione dipartimentale, routing inter-VLAN, test di servizi DHCP, ecc.)\n\nAttendo le tue indicazioni per procedere con la progettazione."
+  }
+]

@@ -1,0 +1,14 @@
+{# frrouting/interface.j2
+   Configura o rimuove un indirizzo IP su un'interfaccia FRR (vtysh).
+   Variabili: iface, ip, cidr, is_rollback
+#}
+configure terminal
+interface {{ iface }}
+{% if is_rollback %}
+no ip address {{ ip }}/{{ cidr }}
+{% else %}
+ip address {{ ip }}/{{ cidr }}
+no shutdown
+{% endif %}
+exit
+exit
