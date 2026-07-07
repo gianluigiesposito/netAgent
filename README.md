@@ -1,4 +1,4 @@
-# netAgent (v2)
+# netAgent
 *Orchestratore di rete multi-vendor a ciclo chiuso basato su LangGraph e GraphRAG.*
 
 `netAgent` è un framework per l'automazione, la verifica e il troubleshooting automatico di topologie di rete simulate in ambiente GNS3. Il sistema supporta apparati **Cisco IOS** (router e switch L2/L3), **FRRouting** e host **VPCS**.
